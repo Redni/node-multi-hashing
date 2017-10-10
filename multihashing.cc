@@ -24,6 +24,7 @@ extern "C" {
     #include "sha1.h"
     #include "x15.h"
 	#include "fresh.h"
+	#include "phi1612.h"
 }
 
 #include "boolberry.h"
@@ -529,6 +530,27 @@ NAN_METHOD(fresh) {
     fresh_hash(input, output, input_len);
 
     info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+}
+
+NAN_METHOD(phi1612) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    tribus_hash(input, output);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
 }
 
 NAN_MODULE_INIT(init) {
