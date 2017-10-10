@@ -533,24 +533,25 @@ NAN_METHOD(fresh) {
 }
 
 NAN_METHOD(phi1612) {
-    NanScope();
 
     if (args.Length() < 1)
         return THROW_ERROR_EXCEPTION("You must provide one argument.");
 
-    Local<Object> target = args[0]->ToObject();
+        Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+
 
     if(!Buffer::HasInstance(target))
         return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
 
     char * input = Buffer::Data(target);
-    char output[32];
+   char *output = (char*) malloc(sizeof(char) * 32);
 
-    tribus_hash(input, output);
+uint32_t input_len = Buffer::Length(target);
 
-    NanReturnValue(
-        NanNewBufferHandle(output, 32)
-    );
+	
+    tribus_hash(input, output, input_len);
+
+   info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
 }
 
 NAN_MODULE_INIT(init) {
@@ -576,6 +577,8 @@ NAN_MODULE_INIT(init) {
     Nan::Set(target, Nan::New("sha1").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(sha1)).ToLocalChecked());
     Nan::Set(target, Nan::New("x15").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(x15)).ToLocalChecked());
     Nan::Set(target, Nan::New("fresh").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(fresh)).ToLocalChecked());
+    Nan::Set(target, Nan::New("phi1612").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(phi1612)).ToLocalChecked());
+
 }
 
 NODE_MODULE(multihashing, init)
