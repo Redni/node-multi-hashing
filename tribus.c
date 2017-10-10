@@ -4,11 +4,12 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include "sph_jh.h"
-#include "sph_keccak.h"
-#include "sph_echo.h"
 
-void tribus_hash(const char* input, char* output)
+#include "sha3/sph_jh.h"
+#include "sha3/sph_keccak.h"
+#include "sha3/sph_echo.h"
+
+void tribus_hash(const char* input, char* output, uint32_t len)
 {
  	sph_jh512_context ctx_jh;
  	sph_keccak512_context ctx_keccak;
@@ -17,7 +18,7 @@ void tribus_hash(const char* input, char* output)
 	uint8_t hash[64]; 
  
  	sph_jh512_init(&ctx_jh);
- 	sph_jh512(&ctx_jh, input, 80);
+ 	sph_jh512(&ctx_jh, input, len);
  	sph_jh512_close(&ctx_jh, (void*) hash);
  
  	sph_keccak512_init(&ctx_keccak);
