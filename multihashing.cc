@@ -549,7 +549,7 @@ NAN_METHOD(tribus) {
 
     uint32_t input_len = Buffer::Length(target);
 
-    tribus_hash(input, output);
+    tribus_hash(input, output, input_len);
 
     info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
 }
@@ -573,7 +573,7 @@ NAN_METHOD(phi1612) {
 uint32_t input_len = Buffer::Length(target);
 
 	
-    tribus_hash(input, output);
+    tribus_hash(input, output, input_len);
 
    info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
 }
