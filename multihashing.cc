@@ -602,8 +602,6 @@ NAN_MODULE_INIT(init) {
     Nan::Set(target, Nan::New("x15").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(x15)).ToLocalChecked());
     Nan::Set(target, Nan::New("fresh").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(fresh)).ToLocalChecked());
     Nan::Set(target, Nan::New("tribus").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(tribus)).ToLocalChecked());
-Nan::Set(target, Nan::New("phi1612").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(phi1612)).ToLocalChecked());
-
 }
 
 NODE_MODULE(multihashing, init)
